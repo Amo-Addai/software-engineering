@@ -3,4 +3,4 @@ class SampleModel < ActiveRecord::Base
 end
 
 # RUN THIS COMMAND TO CREATE A NEW MODEL ->
-#  bin/rails generate model SampleModel title:string text:text
+#  ruby bin/rails generate model SampleModel title:string text:text

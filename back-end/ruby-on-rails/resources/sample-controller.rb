@@ -75,7 +75,7 @@ ensure
 end
 """
 
-# RUN COMMAND TO CREATE A NEW 'SampleController' -> bin/rails generate controller Sample index
+# RUN COMMAND TO CREATE A NEW 'SampleController' -> ruby bin/rails generate controller Sample index
 """ THE COMMAND ABOVE WILL AUTO-GENERATE ALL THESE FILES
 create  app/controllers/sample_controller.rb
 route  get 'sample/index'

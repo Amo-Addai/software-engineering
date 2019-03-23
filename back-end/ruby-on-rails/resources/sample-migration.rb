@@ -24,4 +24,4 @@ class SampleMigration < ActiveRecord::Migration
 
 end 
 
-# RUN COMMAND TO EXECUTE MIGRATIONS ->  rake db:migrate  OR  bin/rails db:migrate
+# RUN COMMAND TO EXECUTE MIGRATIONS ->  rake db:migrate  OR  ruby bin/rails db:migrate
