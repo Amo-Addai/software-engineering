@@ -1,0 +1,42 @@
+{
+  "name": "yo",
+  "version": "3.1.0",
+  "homepage": "https://github.com/doyoe/Yo",
+  "authors": [
+    "Joy Du"
+  ],
+  "description": "Yo 是一个专注于移动开发的 Front-end UI Framework，她轻量，易用，可配置，并且具备超强的扩展能力。",
+  "moduleType": "globals",
+  "main": [
+    "style"
+  ],
+  "keywords": [
+    "yo"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "component_dev",
+    "demo",
+    "doc",
+    "node_modules",
+    ".eslintignore",
+    ".eslintrc.json",
+    ".gitignore",
+    ".npmignore",
+    "shortcut.png",
+    "ykit.js",
+    "yo.png",
+    "style/page/*.scss",
+    "style/export"
+  ],
+  "_release": "3.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.1.0",
+    "commit": "23c9c9e7376c1a6adfd828fb0e1e375b3011bbc4"
+  },
+  "_source": "https://github.com/doyoe/Yo.git",
+  "_target": "^3.1.0",
+  "_originalSource": "yo",
+  "_direct": true
+}

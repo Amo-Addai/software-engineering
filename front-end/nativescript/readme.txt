@@ -1,0 +1,1 @@
+NativeScript - https://docs.nativescript.org/angular/start/cli-basics
