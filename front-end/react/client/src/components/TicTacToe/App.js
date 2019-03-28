@@ -1,5 +1,5 @@
 
-class Square extends React.Component {
+/* class Square extends React.Component {
   render() {
     return (
       <button className="square" onClick={() => this.props.onClick()} >
@@ -7,7 +7,7 @@ class Square extends React.Component {
       </button>
     );
   }
-}
+} */
 
 function Square(props) { // THIS CAN WORK AS A FUNCTION COMPONENT
   return ( // BUT THIS WAY, NO NEED TO USE this.props COZ IT'S NOT A REACT COMPONENT ..
