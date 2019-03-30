@@ -58,8 +58,74 @@
   <app-nav></app-nav>
   <app-view>
     <app-sidebar></app-sidebar>
-    <app-content></app-content>
+    <app-content>
+
+        <div id="blog-post-demo" class="demo">
+            <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            ></blog-post>
+        </div>
+
+        <div id="blog-posts-events-demo">
+            <div :style="{ fontSize: postFontSize + 'em' }">
+                <blog-post
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post" 
+                v-on:enlarge-text="postFontSize += 0.1"
+                v-on:enlarge-text-by-value="postFontSize += $event"
+                v-on:enlarge-text-by-listener="onEnlargeText"                
+                ></blog-post>
+            </div>
+        </div>
+
+        <div>
+            <input v-model="searchText"> <!-- THESE 2 WORK THE SAME WAY .. -->
+            <input v-bind:value="searchText" v-on:input="searchText = $event.target.value">
+            <custom-input v-bind:value="searchText" v-on:input="searchText = $event">
+                <!-- ALSO WORKS SIMILARLY FOR COMPONENTS (CUSTOM INPUTS) -->
+                <!-- custom-input COMPONENT COMMUNICATES WITH ITS PARENT (THIS <div> BY $emit()) -->
+            </custom-input> <!-- OR YOU CAN USE $event.target.value IF CHILD COMPONENT ONLY PASSED $event -->
+            <custom-input v-model="searchText"></custom-input> <!-- THIS ALSO WORKS THOUGH lol -->
+        </div>
+
+        <div><alert-box> Something bad happened. </alert-box></div>
+
+        <div> <!-- NOW WORKING WITH DYNAMIC COMPONENTS -->
+            <!-- Component changes when currentTabComponent changes -->
+            <component v-bind:is="currentTabComponent"></component>
+        </div>
+
+        <!-- Some HTML elements, such as <ul>, <ol>, <table> and <select> have restrictions on what elements can appear 
+            inside them, and some elements such as <li>, <tr>, and <option> can only appear inside certain other elements.
+            This will lead to issues when using components with elements that have such restrictions. -->
+        <div>
+            <table>
+                <blog-post-row></blog-post-row> <!-- THIS WILL FLAG AN ERROR, COZ <table> ONLY ACCEPTS <tr> CHILD ELEMENTS -->
+                <tr is="blog-post-row"></tr> <!-- THEREFORE THIS WILL WORK NOW .. -->
+            </table>
+        </div>
+
+    </app-content>
   </app-view>
 </div>
+<script src="https://unpkg.com/vue"></script>
 
 
+v-bind Shorthand
+<!-- full syntax -->
+<a v-bind:href="url"> ... </a>
+<!-- shorthand -->
+<a :href="url"> ... </a>
+<!-- shorthand with dynamic argument (2.6.0+) -->
+<a :[key]="url"> ... </a>
+
+v-on Shorthand
+<!-- full syntax -->
+<a v-on:click="doSomething"> ... </a>
+<!-- shorthand -->
+<a @click="doSomething"> ... </a>
+<!-- shorthand with dynamic argument (2.6.0+) -->
+<a @[event]="doSomething"> ... </a>

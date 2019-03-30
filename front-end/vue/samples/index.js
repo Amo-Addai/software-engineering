@@ -60,27 +60,91 @@ var app7 = new Vue({
     }
 })
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//          NOW, WORKING WITH MULTIPLE COMPONENTS FOR THE VUE APPLICATION 
+
+
 // Define a new component called todo-item
 Vue.component('todo-item', {
     // The todo-item component now accepts a
     // "prop", which is like a custom attribute.
     // This prop is called todo.
     props: ['todo'],
+    data: function () { // MUST BE A FUNCTION THAT RETURNS OBJECT {}, & NOT AN OBJECT {} DIRECTLY
+      return { /* YOU CAN PASS data PROPS */ }
+    },
     template: '<li>{{ todo.text }}</li>'
 })
+
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+        <h3>{{ post.title }}</h3>
+        <button v-on:click="$emit('enlarge-text')" >Enlarge text</button>
+        <button v-on:click="$emit('enlarge-text-by-value', 0.1)">
+            Enlarge text by Value
+        </button>
+        <button v-on:click="$emit('enlarge-text-by-listener')">
+            Enlarge text by Event Listener
+        </button>
+        <div v-html="post.content"></div>
+    </div>
+  `
+}) // OR YOU CAN PROBABLY USE v-on:click="onEnlargeText" TOO, WITH onEnlargeText() IN methods
+// NOT TOO SURE IF THAT'LL WORK THOUGH, COZ EVEN IF postFontSize++, IT MIGHT NOT UPDATE THE
+// <blog-post> ELEMENT, COZ postFontSize + 'em' WAS ONLY A 1-TIME USE WITH NO DATA-BINDING ..
+
+Vue.component('custom-input', {
+    props: ["value"],
+    template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+    ` //  OR YOU CAN PASS IN $event JUST LIKE THAT
+})
+
+Vue.component('alert-box', {
+    template: `
+      <div class="demo-alert-box">
+        <strong>Error!</strong>
+        <slot></slot>
+      </div>
+    ` // eg. <alert-box> Something bad happened. </alert-box>
+}) // THEREFORE, ' Something bad happened. ' IS PASSED INTO THE <slot></slot> ITEM IN THIS COMPONENT ..
 
 new Vue({
     el: '#app-8',
     data: {
-        a: 1
+        a: 1,
+        posts: [/* ... */],
+        postFontSize: 1,
+        searchText: ""
     },
     methods: {
-
+        onEnlargeText: (enlargeAmount) => { 
+            this.postFontSize + enlargeAmount;
+            // this.postFontSize++;
+        }
     },
     // YOU CAN ALSO DEFINE LIFECYCLE METHODS ..
     created: function () {
         // `this` points to the vm instance
         console.log('a is: ' + this.a)
+        // 
+        // Alias the component instance as `vm`, so that we  
+        // can access it inside the promise function
+        var vm = this
+        // Fetch our array of posts from an API
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (data) {
+                vm.posts = data // THIS WILL ALSO UPDATE this COMPONENT'S .posts PROPERTY
+            })
     },
     mounted: function () {
         // RUN STH RIGHT HERE .. 
