@@ -54,6 +54,22 @@
   </ol>
 </div>
 
+v-bind Shorthand
+<!-- full syntax -->
+<a v-bind:href="url"> ... </a>
+<!-- shorthand -->
+<a :href="url"> ... </a>
+<!-- shorthand with dynamic argument (2.6.0+) -->
+<a :[key]="url"> ... </a>
+
+v-on Shorthand
+<!-- full syntax -->
+<a v-on:click="doSomething"> ... </a>
+<!-- shorthand -->
+<a @click="doSomething"> ... </a>
+<!-- shorthand with dynamic argument (2.6.0+) -->
+<a @[event]="doSomething"> ... </a>
+
 <div id="app-8">
   <app-nav></app-nav>
   <app-view>
@@ -114,18 +130,25 @@
 <script src="https://unpkg.com/vue"></script>
 
 
-v-bind Shorthand
-<!-- full syntax -->
-<a v-bind:href="url"> ... </a>
-<!-- shorthand -->
-<a :href="url"> ... </a>
-<!-- shorthand with dynamic argument (2.6.0+) -->
-<a :[key]="url"> ... </a>
 
-v-on Shorthand
-<!-- full syntax -->
-<a v-on:click="doSomething"> ... </a>
-<!-- shorthand -->
-<a @click="doSomething"> ... </a>
-<!-- shorthand with dynamic argument (2.6.0+) -->
-<a @[event]="doSomething"> ... </a>
+<!-- WORKING WITH TEMPLATING FILES .. -->
+<script type="text/x-template" id="anchored-heading-template">
+  <h1 v-if="level === 1">
+    <slot></slot>
+  </h1>
+  <h2 v-else-if="level === 2">
+    <slot></slot>
+  </h2>
+  <h3 v-else-if="level === 3">
+    <slot></slot>
+  </h3>
+  <h4 v-else-if="level === 4">
+    <slot></slot>
+  </h4>
+  <h5 v-else-if="level === 5">
+    <slot></slot>
+  </h5>
+  <h6 v-else-if="level === 6">
+    <slot></slot>
+  </h6>
+</script>

@@ -148,9 +148,11 @@ new Vue({
     },
     mounted: function () {
         // RUN STH RIGHT HERE .. 
-    }, updated: function () {
+    }, 
+    updated: function () {
         // RUN STH RIGHT HERE .. 
-    }, destroyed: function () {
+    }, 
+    destroyed: function () {
         // RUN STH RIGHT HERE .. 
     },
     /* Don’t use arrow functions on an options property or callback, such as created: () => console.log(this.a) 
@@ -159,3 +161,137 @@ new Vue({
     often resulting in errors such as Uncaught TypeError: Cannot read property of undefined 
     or Uncaught TypeError: this.myMethod is not a function. */
 })
+
+//  DEFINING ASYNCHRONOUS COMPONENTS
+Vue.component('async-webpack-example', function (resolve) {
+  // This special require syntax will instruct Webpack to
+  // automatically split your built code into bundles which
+  // are loaded over Ajax requests.
+  require(['./my-async-component'], resolve)
+}) // OR, YOU CAN DEFINE IT WITH THE SHORT-SYNTAX VERSION
+Vue.component(
+  'async-webpack-example',
+  // The `import` function returns a Promise.
+  () => import('./my-async-component')
+)
+
+new Vue({
+    el: '#app-9',
+    data: {},
+    methods: {},
+    // ...
+    components: {
+      'my-component': () => import('./my-async-component')
+    }
+})
+
+//  WORKING WITH .render FUNCTIONS WITH .JSX CODE ..
+
+Vue.component('anchored-heading', {
+  template: '#anchored-heading-template', // id PROP OF A <script type="text/x-template" id="anchored-heading-template">
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }, // OR DEFINE props THIS WAY
+  props: ['level', 'items'],
+  render: function (createElement) {
+    // USE createElement() TO CREATE HTML ELEMS TO BE RENDERED ..
+    return createElement(
+      'h' + this.level,   // tag name
+      [
+        createElement('a', {
+          attrs: {
+            name: headingId,
+            href: '#' + headingId
+          }
+        }, this.$slots.default)  // array of children
+      ]
+    )
+    /*
+    <ul v-if="items.length">
+        <li v-for="item in items">{{ item.name }}</li>
+    </ul>
+    <p v-else>No items found.</p>
+    */ // NOW HERE IS THE EQUIVALENT VERSION OF THIS html CODE IN .js
+    if (this.items.length) {
+        return createElement('ul', this.items.map(function (item) {
+            return createElement('li', item.name)
+        }))
+    } else {
+        return createElement('p', 'No items found.')
+    }
+  },
+})
+
+//  FUNCTIONAL COMPONENTS (STATELESS, THEREFORE HAVE NO LIVE STATE)
+
+Vue.component('my-component', {
+  functional: true,
+  // Props are optional
+  props: {
+    // ...
+  },
+  // To compensate for the lack of an instance,
+  // we are now provided a 2nd context argument.
+  render: function (createElement, context) {
+    // ...
+  }
+}) 
+
+// HERE'S A CLEAR EXAMPLE
+var EmptyList = { /* ... */ }, TableList = { /* ... */ }, 
+OrderedList = { /* ... */ }, UnorderedList = { /* ... */ };
+
+Vuee.component('smart-list', {
+  functional: true,
+  props: {
+    items: {
+      type: Array,
+      required: true
+    },
+    isOrdered: Boolean
+  },
+  render: function (createElement, context) {
+    function appropriateListComponent () {
+      var items = context.props.items
+
+      if (items.length === 0)           return EmptyList
+      if (typeof items[0] === 'object') return TableList
+      if (context.props.isOrdered)      return OrderedList
+
+      return UnorderedList
+    }
+    return createElement(
+      appropriateListComponent(),
+      context.data,
+      context.children
+    )
+  }
+})
+
+//      WORKING WITH ROUTING
+
+const NotFound = { template: '<p>Page not found</p>' }
+const Home = { template: '<p>home page</p>' }
+const About = { template: '<p>about page</p>' }
+
+const routes = {
+  '/': Home,
+  '/about': About
+}
+
+new Vue({
+  el: '#app-10',
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    ViewComponent () {
+      return routes[this.currentRoute] || NotFound
+    }
+  },
+  render (h) { return h(this.ViewComponent) }
+})
+
